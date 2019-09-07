@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import { Input, List, Button } from 'antd';
 import store from '../redux/store'
+import { addTodoAction, deleteTodoAction } from '../redux/actions/todoAction'
 
 class TodeList extends Component {
   constructor(props) {
     super(props);
-    // console.log(store.getState())
-    this.state = store.getState()
+    store.subscribe(() => {
+      this.setState({
+        list: store.getState().todo.list
+      })
+    })
+    this.state = {
+      inputValue: '',
+      list: store.getState().todo.list
+    }
   }
   render() {
     return (
@@ -52,18 +60,19 @@ class TodeList extends Component {
 
   addItem() {
     if (this.state.inputValue && this.state.inputValue.length > 0) {
+      store.dispatch(addTodoAction(this.state.inputValue))
       this.setState({
-        list: [...this.state.list, this.state.inputValue],
+        // list: [...this.state.list, this.state.inputValue],
         inputValue: ''
       })
     }
   }
 
   deleteItem(index) {
-    this.state.list.splice(index, 1)
-    this.setState({
-      list: this.state.list,
-    })
+    store.dispatch(deleteTodoAction(index))
+    // this.setState({
+    //   list: this.state.list,
+    // })
   }
 }
 

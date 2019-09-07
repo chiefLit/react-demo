@@ -1,9 +1,8 @@
-const defaultStore = {
-  inputValue: '',
-  list: []
-}
+import { combineReducers } from 'redux'
+import todoReducer from './todoReducer'
 
-export default (state = defaultStore, action) => {
-  console.log(action)
-  return state
-}
+const todoApp = combineReducers({
+  todo: todoReducer
+})
+
+export default todoApp
